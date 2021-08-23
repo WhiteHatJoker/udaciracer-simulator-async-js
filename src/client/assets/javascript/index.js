@@ -34,32 +34,37 @@ async function onPageLoad() {
 }
 
 function setupClickHandlers() {
-	document.addEventListener('click', function(event) {
-		const { target } = event
-
+	document.addEventListener('click', function (event) {
+		// event.stopPropagation();
+		const parent = event.target.parentElement
+		const { target } = event;
+		if(parent.matches('.card.track')){
+			handleSelectTrack(parent);
+		}
+		
+		if(parent.matches('.card.podracer')){
+			handleSelectPodRacer(parent);
+		}
+		
 		// Race track form field
 		if (target.matches('.card.track')) {
-			handleSelectTrack(target)
+			handleSelectTrack(target);
 		}
-
 		// Podracer form field
 		if (target.matches('.card.podracer')) {
+			event.stopPropagation();
 			handleSelectPodRacer(target)
 		}
-
 		// Submit create race form
 		if (target.matches('#submit-create-race')) {
-			event.preventDefault()
-	
+			event.preventDefault();
 			// start race
-			handleCreateRace()
+			handleCreateRace();
 		}
-
 		// Handle acceleration click
 		if (target.matches('#gas-peddle')) {
 			handleAccelerate(target)
 		}
-
 	}, false)
 }
 
@@ -91,11 +96,10 @@ async function handleCreateRace() {
 	// TODO - call the async function runCountdown
     await runCountdown()
 	// TODO - call the async function startRace
-	console.log("I am here")
 	await startRace(race.ID)
 	console.log("I am")
 	// TODO - call the async function runRace
-	// await runRace(race.ID)
+	await runRace(race.ID)
 }
 
 function runRace(raceID) {
