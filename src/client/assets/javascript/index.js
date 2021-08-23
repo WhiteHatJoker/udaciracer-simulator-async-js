@@ -182,7 +182,7 @@ function renderRacerCars(racers) {
 
 	return `
 		<ul id="racers">
-			${reuslts}
+			${results}
 		</ul>
 	`
 }
@@ -321,17 +321,15 @@ function defaultFetchOpts() {
 
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
-	fetch(`${SERVER}/api/tracks`)
+	return fetch(`${SERVER}/api/tracks`)
 	.then(response => response.json())
-	.then(response => response)
 	.catch(error => console.log(error))
 }
 
 function getRacers() {
 	// GET request to `${SERVER}/api/cars`
-	fetch(`${SERVER}/api/cars`)
+	return fetch(`${SERVER}/api/cars`)
 	.then(response => response.json())
-	.then(response => response)
 	.catch(error => console.log(error))
 }
 
@@ -352,9 +350,8 @@ function createRace(player_id, track_id) {
 
 function getRace(id) {
 	// GET request to `${SERVER}/api/races/${id}`
-	fetch(`${SERVER}/api/races/${id}`)
+	return fetch(`${SERVER}/api/races/${id}`)
 	.then(response => response.json())
-	.then(response => response)
 	.catch(error => console.log(error))
 }
 
@@ -371,11 +368,10 @@ function accelerate(id) {
 	// POST request to `${SERVER}/api/races/${id}/accelerate`
 	// options parameter provided as defaultFetchOpts
 	// no body or datatype needed for this request
-	fetch(`${SERVER}/api/races/${id}/accelerate`, {
+	return fetch(`${SERVER}/api/races/${id}/accelerate`, {
     	method: 'POST', 
-		defaultFetchOpts()
+		...defaultFetchOpts(),
 	})
 	.then(response => response.json())
-	.then(response => console.log(response))
 	.catch(error => console.log(error))
 }
