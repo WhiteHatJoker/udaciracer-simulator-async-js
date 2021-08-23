@@ -35,9 +35,9 @@ async function onPageLoad() {
 
 function setupClickHandlers() {
 	document.addEventListener('click', function (event) {
-		// event.stopPropagation();
+		const { target } = event
 		const parent = event.target.parentElement
-		const { target } = event;
+
 		if(parent.matches('.card.track')){
 			handleSelectTrack(parent);
 		}
@@ -89,26 +89,24 @@ async function handleCreateRace() {
 	// const race = TODO - invoke the API call to create the race, then save the result
 	const race = await createRace(player_id, track_id)
 	// TODO - update the store with the race id
-	console.log(race)
-    store.race_id = race.ID
-	console.log(store)
+	// Looks like there is a bug with Udacity, they will fix it later
+    store.race_id = parseInt(race.ID-1)
 	// The race has been created, now start the countdown
 	// TODO - call the async function runCountdown
     await runCountdown()
 	// TODO - call the async function startRace
-	await startRace(race.ID)
-	console.log("I am")
+	await startRace(store.race_id)
 	// TODO - call the async function runRace
-	await runRace(race.ID)
+	await runRace(store.race_id)
 }
 
 function runRace(raceID) {
 	return new Promise(resolve => {
 	// TODO - use Javascript's built in setInterval method to get race info every 500ms
-		// const raceUpdater = setInterval(() => {
-			const raceResults = getRace(raceID)
+		const raceUpdater = setInterval( async () => {
+			const raceResults = await getRace(raceID)
 			console.log(raceResults)
-		// }, 500)
+		}, 500)
 	/* 
 		TODO - if the race info status property is "in-progress", update the leaderboard by calling:
 
@@ -380,6 +378,7 @@ function startRace(id) {
 		method: 'POST',
 		...defaultFetchOpts(),
 	})
+    .then((res) => console.log("Race Started!"))
 	.catch(err => console.log("Problem with getRace request::", err))
 }
 
@@ -391,5 +390,6 @@ function accelerate(id) {
     	method: 'POST', 
 		...defaultFetchOpts(),
 	})
+    .then((res) => console.log("Accelerating"))
 	.catch(error => console.log(error))
 }
