@@ -82,21 +82,29 @@ async function handleCreateRace() {
 
 
 	// const race = TODO - invoke the API call to create the race, then save the result
-	const race = createRace(player_id, track_id)
+	const race = await createRace(player_id, track_id)
 	// TODO - update the store with the race id
 	console.log(race)
+    store.race_id = race.ID
+	console.log(store)
 	// The race has been created, now start the countdown
 	// TODO - call the async function runCountdown
-
+    await runCountdown()
 	// TODO - call the async function startRace
-
+	console.log("I am here")
+	await startRace(race.ID)
+	console.log("I am")
 	// TODO - call the async function runRace
+	// await runRace(race.ID)
 }
 
 function runRace(raceID) {
 	return new Promise(resolve => {
 	// TODO - use Javascript's built in setInterval method to get race info every 500ms
-
+		// const raceUpdater = setInterval(() => {
+			const raceResults = getRace(raceID)
+			console.log(raceResults)
+		// }, 500)
 	/* 
 		TODO - if the race info status property is "in-progress", update the leaderboard by calling:
 
@@ -122,12 +130,19 @@ async function runCountdown() {
 
 		return new Promise(resolve => {
 			// TODO - use Javascript's built in setInterval method to count down once per second
+			const timeIsGoing = setInterval(() => {
+				// run this DOM manipulation to decrement the countdown for the user
+				document.getElementById('big-numbers').innerHTML = --timer
+				console.log(timer)
 
-			// run this DOM manipulation to decrement the countdown for the user
-			document.getElementById('big-numbers').innerHTML = --timer
+				// TODO - if the countdown is done, clear the interval, resolve the promise, and return
+				if(timer === 0) {
+					console.log("Go!")
+					clearInterval(timeIsGoing)
+					resolve(true)
+				}
 
-			// TODO - if the countdown is done, clear the interval, resolve the promise, and return
-
+			}, 1000)
 		})
 	} catch(error) {
 		console.log(error);
@@ -160,13 +175,13 @@ function handleSelectTrack(target) {
 	target.classList.add('selected')
 	// save the selected track id to the store
 	store.track_id = target.id
-	store.track_name = target.name
+	store.track_name = target.innerText
 }
 
 function handleAccelerate() {
 	console.log("accelerate button clicked")
 	// Invoke the API call to accelerate
-	accelerate(store.player_id)
+	accelerate(store.race_id)
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -361,7 +376,7 @@ function startRace(id) {
 		method: 'POST',
 		...defaultFetchOpts(),
 	})
-	.then(res => res.json())
+	.then(true)
 	.catch(err => console.log("Problem with getRace request::", err))
 }
 
