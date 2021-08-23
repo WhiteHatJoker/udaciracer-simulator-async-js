@@ -5,6 +5,7 @@ var store = {
 	track_id: undefined,
 	player_id: undefined,
 	race_id: undefined,
+	track_name: undefined
 }
 
 // We need our javascript to wait until the DOM is loaded
@@ -74,15 +75,16 @@ async function delay(ms) {
 
 // This async function controls the flow of the race, add the logic and error handling
 async function handleCreateRace() {
-	// render starting UI
-	renderAt('#race', renderRaceStartView())
-
 	// TODO - Get player_id and track_id from the store
-	
+	const {player_id, track_id, track_name} = store
+	// render starting UI
+	renderAt('#race', renderRaceStartView(track_name))
+
+
 	// const race = TODO - invoke the API call to create the race, then save the result
-
+	const race = createRace(player_id, track_id)
 	// TODO - update the store with the race id
-
+	console.log(race)
 	// The race has been created, now start the countdown
 	// TODO - call the async function runCountdown
 
@@ -140,11 +142,10 @@ function handleSelectPodRacer(target) {
 	if(selected) {
 		selected.classList.remove('selected')
 	}
-
 	// add class selected to current target
 	target.classList.add('selected')
-
-	// TODO - save the selected racer to the store
+	// save the selected racer to the store
+	store.player_id = target.id
 }
 
 function handleSelectTrack(target) {
@@ -155,17 +156,17 @@ function handleSelectTrack(target) {
 	if(selected) {
 		selected.classList.remove('selected')
 	}
-
 	// add class selected to current target
 	target.classList.add('selected')
-
-	// TODO - save the selected track id to the store
-	
+	// save the selected track id to the store
+	store.track_id = target.id
+	store.track_name = target.name
 }
 
 function handleAccelerate() {
 	console.log("accelerate button clicked")
-	// TODO - Invoke the API call to accelerate
+	// Invoke the API call to accelerate
+	accelerate(store.player_id)
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -236,7 +237,7 @@ function renderCountdown(count) {
 function renderRaceStartView(track, racers) {
 	return `
 		<header>
-			<h1>Race: ${track.name}</h1>
+			<h1>Race: ${track}</h1>
 		</header>
 		<main id="two-columns">
 			<section id="leaderBoard">
