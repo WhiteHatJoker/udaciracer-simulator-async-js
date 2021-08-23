@@ -169,7 +169,7 @@ function handleSelectTrack(target) {
 	// add class selected to current target
 	target.classList.add('selected')
 	// save the selected track id to the store
-	store.track_id = parseInt(target.id)
+	store.track_id = target.id
 	store.track_name = target.innerText
 }
 
@@ -204,9 +204,9 @@ function renderRacerCard(racer) {
 	return `
 		<li class="card podracer" id="${id}">
 			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+			<p>Speed:${top_speed}</p>
+			<p>Accel:${acceleration}</p>
+			<p>Handle:${handling}</p>
 		</li>
 	`
 }
