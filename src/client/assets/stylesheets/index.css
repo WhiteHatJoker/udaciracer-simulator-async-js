@@ -21,10 +21,10 @@ body {
 }
 
 header {
-  background-image: url('https://via.placeholder.com/1150');
+  background-image: url('./../img/crt.jpeg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -106,7 +106,7 @@ footer {
 
 @media (min-width: 1224px) {
   header {
-    height: 700px;
+    height: 850px;
   }
 }
 
@@ -114,6 +114,6 @@ footer {
 
 @media (min-width: 1824px) {
   header {
-    height: 700px;
+    height: 850px;
   }
 }
